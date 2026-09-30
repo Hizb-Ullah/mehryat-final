@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4 { @apply font-display; }
+}
+
+@layer components {
+  .stitch-rule {
+    position: relative;
+    height: 1px;
+    background: theme("colors.ink" / 15%);
+  }
+  .stitch-rule::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    top: 3px;
+    background-image: repeating-linear-gradient(
+      to right, theme("colors.gold") 0, theme("colors.gold") 5px,
+      transparent 5px, transparent 11px
+    );
+    height: 1px;
+    opacity: 0.55;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-ink text-parchment px-7 py-3 text-sm tracking-widest2 uppercase transition-colors duration-200 hover:bg-espresso;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center bg-gold text-parchment px-7 py-3 text-sm tracking-widest2 uppercase transition-colors duration-200 hover:bg-ink;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center border border-ink text-ink px-7 py-3 text-sm tracking-widest2 uppercase transition-colors duration-200 hover:bg-ink hover:text-parchment;
+  }
+  .eyebrow { @apply text-xs uppercase tracking-widest2 text-cognac; }
+  .input { @apply w-full border border-stone/30 px-4 py-3 bg-transparent; }
+
+  /* Animated hero background — a slow-moving diagonal gradient sweep plus
+     two soft drifting glows, in the brand's espresso/cognac/gold tones.
+     Used behind the hero panel in place of a static image/video. */
+  .hero-animated-bg {
+    position: relative;
+    background: linear-gradient(
+      120deg,
+      theme("colors.parchment") 0%,
+      #ead9c4 30%,
+      theme("colors.cognac") 55%,
+      #ead9c4 80%,
+      theme("colors.parchment") 100%
+    );
+    background-size: 300% 300%;
+    animation: heroGradientSweep 14s ease-in-out infinite;
+    overflow: hidden;
+  }
+  .hero-animated-bg::before,
+  .hero-animated-bg::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    opacity: 0.35;
+  }
+  .hero-animated-bg::before {
+    width: 55%;
+    height: 55%;
+    top: -10%;
+    left: -10%;
+    background: theme("colors.gold");
+    animation: heroGlowDriftA 10s ease-in-out infinite;
+  }
+  .hero-animated-bg::after {
+    width: 45%;
+    height: 45%;
+    bottom: -10%;
+    right: -10%;
+    background: theme("colors.cognac");
+    animation: heroGlowDriftB 12s ease-in-out infinite;
+  }
+}
+
+@keyframes heroGradientSweep {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes heroGlowDriftA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(15%, 10%) scale(1.15); }
+}
+@keyframes heroGlowDriftB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-12%, -8%) scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-animated-bg,
+  .hero-animated-bg::before,
+  .hero-animated-bg::after {
+    animation: none;
+  }
+}
